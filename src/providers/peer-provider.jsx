@@ -1,7 +1,36 @@
 import { createContext, useContext, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export const PeerContextProvider = ({ children }) => {
-  const PeerContextValue = {};
+  const [peer, setPeer] = useState(null);
+  const [peerId, setPeerId] = useState();
+  const [remoteUserVideo, setRemoteUserVideo] = useState();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const peer = new Peer();
+    peer.on("open", (id) => {
+      console.log("peer id", id);
+      setPeerId(id);
+    });
+    setPeer(peer);
+    peer?.on("error", (err) => {
+      console.log("peer error", err);
+    });
+    peer.on("disconnected", () => {
+      console.log("peer disconnected");
+      navigate("/");
+      window.location.reload();
+    });
+
+    return () => {
+      peer?.destroy();
+    };
+  }, []);
+  const PeerContextValue = {
+    peer,
+    peerId,
+    remoteUserVideo,
+  };
 
   return (
     <PeerContext.Provider value={PeerContextValue}>
