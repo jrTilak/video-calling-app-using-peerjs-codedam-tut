@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useState } from "react";
+import Peer from "peerjs";
 
 export const PeerContextProvider = ({ children }) => {
   const [peer, setPeer] = useState(null);
@@ -16,10 +18,23 @@ export const PeerContextProvider = ({ children }) => {
     peer?.on("error", (err) => {
       console.log("peer error", err);
     });
-    peer.on("disconnected", () => {
-      console.log("peer disconnected");
-      navigate("/");
-      window.location.reload();
+    peer?.on("call", (call) => {
+      navigate(`/call/${call.peer}`);
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: false }) // get the video and audio from the user
+        .then((stream) => {
+          call.answer(stream); // Answer the call with an A/V stream.
+          call.on("stream", (remoteStream) => {
+            // Show stream in some video/canvas element.
+            setRemoteUserVideo(remoteStream);
+          });
+          call.on("close", () => {
+            // Handle call close event
+            console.log("Call ended");
+            setRemoteUserVideo(null);
+            navigate("/");
+          });
+        });
     });
 
     return () => {

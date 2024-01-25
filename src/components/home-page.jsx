@@ -1,26 +1,24 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import { useRef } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { usePeerContext } from "../providers/peer-provider";
 
 const HomePage = () => {
   const myVideoRef = useRef();
-  const [remoteUserId, setRemoteUserId] = useState("");
   const navigate = useNavigate();
+  const [roomId, setRoomId] = useState("");
+  const { peerId } = usePeerContext();
+
   useEffect(() => {
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: false })
+      .getUserMedia({ video: true, audio: false }) // get the video and audio from the user
       .then((stream) => {
-        myVideoRef.current.srcObject = stream;
+        myVideoRef.current.srcObject = stream; // set the video to the current stream
       });
   }, []);
 
-  const handleCall = () => {
-    if (!remoteUserId) {
-      alert("Please enter the remote user id");
-      return;
-    }
-    navigate(`/call/${remoteUserId}`);
+  const handleJoinRoom = () => {
+    if (!roomId) return alert("Please enter a room id");
+    navigate(`/call/${roomId}`);
   };
 
   return (
@@ -33,26 +31,23 @@ const HomePage = () => {
           <span
             id="peerId"
             onClick={() => {
-              // navigator.clipboard.writeText(peerId);
+              navigator.clipboard.writeText(peerId);
             }}
           >
-            peerId
+            {peerId}
           </span>
         </p>
         {/* YOUR VIDEO  */}
         <video ref={myVideoRef} autoPlay />
         <input
-          value={remoteUserId}
-          onChange={(e) => {
-            setRemoteUserId(e.target.value);
-          }}
+          value={roomId}
+          onChange={(e) => setRoomId(e.target.value)}
           type="text"
           placeholder="Other user's id"
         />
-        <button onClick={handleCall}>Call</button>
+        <button onClick={handleJoinRoom}>Call</button>
       </div>
     </main>
   );
 };
-
 export default HomePage;
