@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useState } from "react";
+import Peer from "peerjs";
 
 export const PeerContextProvider = ({ children }) => {
   const [peer, setPeer] = useState(null);
