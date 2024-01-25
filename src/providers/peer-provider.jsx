@@ -18,11 +18,6 @@ export const PeerContextProvider = ({ children }) => {
     peer?.on("error", (err) => {
       console.log("peer error", err);
     });
-    peer.on("disconnected", () => {
-      console.log("peer disconnected");
-      navigate("/");
-      window.location.reload();
-    });
 
     return () => {
       peer?.destroy();
