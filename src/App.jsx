@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
-import HomePage from "./components/home-page";
-import CallPage from "./components/call-page";
+import HomePage from "./home-page";
+import CallPage from "./call-page";
 
 const routes = [
   {
