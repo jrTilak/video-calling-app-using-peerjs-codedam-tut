@@ -1,10 +1,27 @@
-function App() {
-  // ADD ROUTES HERE
+import { Routes, Route } from "react-router-dom";
+
+import HomePage from "./components/home-page";
+import CallPage from "./components/call-page";
+
+const routes = [
+  {
+    path: "/",
+    Component: HomePage,
+  },
+  {
+    path: "/call/:remoteUserId",
+    Component: CallPage,
+  },
+];
+
+const App = () => {
   return (
-    <>
-      <h1>Hello World</h1>
-    </>
+    <Routes>
+      {routes.map(({ path, Component }) => {
+        return <Route key={path} path={path} element={<Component />} />;
+      })}
+    </Routes>
   );
-}
+};
 
 export default App;
