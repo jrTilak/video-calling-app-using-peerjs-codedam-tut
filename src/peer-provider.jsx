@@ -1,13 +1,10 @@
 import { createContext, useContext, useEffect } from "react";
-import { useNavigate } from "react-router";
 import { useState } from "react";
 import Peer from "peerjs";
 
 export const PeerContextProvider = ({ children }) => {
   const [peer, setPeer] = useState(null);
   const [peerId, setPeerId] = useState();
-  const [remoteUserVideo, setRemoteUserVideo] = useState();
-  const navigate = useNavigate();
   useEffect(() => {
     const peer = new Peer();
     peer.on("open", (id) => {
@@ -26,7 +23,6 @@ export const PeerContextProvider = ({ children }) => {
   const PeerContextValue = {
     peer,
     peerId,
-    remoteUserVideo,
   };
 
   return (

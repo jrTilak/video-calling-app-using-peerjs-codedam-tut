@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useRef } from "react";
 import { useNavigate } from "react-router";
+import { usePeerContext } from "./peer-provider";
 
 const HomePage = () => {
   const myVideoRef = useRef();
   const [remoteUserId, setRemoteUserId] = useState("");
   const navigate = useNavigate();
+  const { peerId } = usePeerContext();
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: false })
@@ -33,10 +35,10 @@ const HomePage = () => {
           <span
             id="peerId"
             onClick={() => {
-              // navigator.clipboard.writeText(peerId);
+              navigator.clipboard.writeText(peerId);
             }}
           >
-            peerId
+            {peerId}
           </span>
         </p>
         {/* YOUR VIDEO  */}
