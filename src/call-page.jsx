@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { usePeerContext } from "../providers/peer-provider";
+import { usePeerContext } from "./peer-provider";
 
 const CallPage = () => {
   const navigate = useNavigate();
@@ -43,7 +43,9 @@ const CallPage = () => {
             <span>
               {
                 // if the remoteUserVideo is not null then show the remote user id
-                remoteUserVideo ? remoteUserId : "Waiting for the other user to join"
+                remoteUserVideo
+                  ? remoteUserId
+                  : "Waiting for the other user to join"
               }
             </span>
             <video ref={remoteUserVideoRef} autoPlay />

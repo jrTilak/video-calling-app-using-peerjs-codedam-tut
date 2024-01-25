@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { usePeerContext } from "../providers/peer-provider";
+import { usePeerContext } from "./peer-provider";
 
 const HomePage = () => {
   const myVideoRef = useRef();
